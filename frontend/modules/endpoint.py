@@ -8,3 +8,42 @@ base_url = 'http://localhost:5000/api/'
 #
 ###########################################################################
 
+# Registers a new user by sending POST to /api/users
+# Requires name, email and password
+# Returns True, <user as JSON> if successful
+# Returns False, <error> if unsuccessful
+def register_user(name, email, password):
+    request_body = {
+        'name': name,
+        'email': email,
+        'password': password
+    }
+    response = requests.post(base_url + 'users', json=request_body)
+    ret = False, "An error occured"
+    if response.status_code == 200:
+        ret = False, response.json()['message']
+    elif response.status_code == 201:
+        ret = True, response.json()
+    print('regsiter_user(): ' + str(ret))
+    return ret
+
+# Gets user information by sending GET to /api/user/<id>
+# Requires user id and session token
+# Returns True, <user as JSON> if successful
+# Returns False, <error> if unsuccessful
+def get_user(user_id, session_token):
+    request_headers = {'session_token': session_token}
+    response = requests.get(base_url + 'user/' + str(user_id), headers=request_headers)
+    ret = False, "An error occured"
+    if response.status_code == 404 or response.status_code == 401:
+        ret = False, response.json()['message']
+    elif response.status_code == 200:
+        data = response.json()
+        user = {
+            'id': data['user']['id'],
+            'name': data['user']['name'],
+            'email': data['user']['email'],
+        }
+        ret = True, user
+    print('get_user(): ' + str(ret))
+    return ret
