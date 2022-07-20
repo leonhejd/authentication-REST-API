@@ -47,3 +47,31 @@ def get_user(user_id, session_token):
         ret = True, user
     print('get_user(): ' + str(ret))
     return ret
+
+# Deletes a user by sending DELETE to /api/user/<id>
+# Requires user id and password
+# Returns True, <response> if successful
+# Returns False, <error> if unsuccessful
+def delete_user(user_id, password):
+    request_body = {'password': password}
+    response = requests.delete(base_url + 'user/' + str(user_id), json=request_body)
+    ret = False, "An error occured"
+    if response.status_code == 401 or response.status_code == 404:
+        ret = False, response.json()['message']
+    elif response.status_code == 200:
+        ret = True, response.json()
+    print('delete_user(): ' + str(ret))
+    return ret
+
+# Requests a password reset by sending POST to /api/user/password
+# Requires user email
+# Returns True, <response> if successful
+# Returns False, <error> if unsuccessful
+def request_password_reset(email):
+    request_body = {'email': email}
+    response = requests.post(base_url + 'user/password', json=request_body)
+    ret = False, "An error occured"
+    if response.status_code == 202:
+        ret = True, response.json()['message']
+    print('request_password_reset(): ' + str(ret))
+    return ret
