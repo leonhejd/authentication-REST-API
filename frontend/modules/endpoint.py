@@ -75,3 +75,32 @@ def request_password_reset(email):
         ret = True, response.json()['message']
     print('request_password_reset(): ' + str(ret))
     return ret
+
+# Resets the password of a user
+# Requires reset token and new password
+# Returns True, <response> if successful
+# Returns False, <error> if unsuccessful
+def reset_password(reset_token, new_password):
+    request_body = {
+        "reset_token": reset_token,
+        "new_password": new_password
+    }
+    response = requests.put(base_url + 'user/password', json=request_body)
+    ret = False, "An error occured"
+    if response.status_code == 401:
+        ret = False, response.json()['message']
+    elif response.status_code == 200:
+        ret = True, response.json()['message']
+    print('reset_password(): ' + str(ret))
+    return ret
+
+# Filters the database for users matching the specified query
+# Requires search query
+# Returns query result in JSON format
+def filter_users(query):
+    query_list = query.split(' ')
+    query_formatted = '+'.join(query_list)
+    request_url = base_url + 'user/filter?name=' + query_formatted
+    response = requests.get(request_url)
+    print("filter_users(): " + str(response.json()))
+    return response.json()['users']
