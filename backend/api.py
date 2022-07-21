@@ -298,8 +298,6 @@ class Filter(Resource):
         args = self.post_args.parse_args()
         users = User.query.all()
         result = []
-        name = args['name'].split('+')
-        name = ' '.join(name)
         for user in users:
             if re.search(args['name'], user.name, re.IGNORECASE):
                 result.append(user)
