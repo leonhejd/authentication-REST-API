@@ -104,3 +104,40 @@ def filter_users(query):
     response = requests.get(request_url)
     print("filter_users(): " + str(response.json()))
     return response.json()['users']
+
+# Log in a user
+# Requires user email and password
+# Returns True, <user as JSON with session token> if successful
+# Returns False, <error> if unsuccessful
+def login(email, password):
+    request_body = {'email': email, 'password': password}
+    response = requests.post(base_url + 'session/login', json=request_body)
+    ret = False, "An error occured"
+    if response.status_code == 401:
+        ret = False, response.json()['message']
+    elif response.status_code == 200:
+        data = response.json()
+        user = {
+            'id': data['user']['id'],
+            'name': data['user']['name'],
+            'email': data['user']['email'],
+            'session_token': data['session-token']
+        }
+        ret = True, user
+    print("login(): " + str(ret))
+    return ret
+
+# Log out user
+# Requires session token
+# Returns True, "Success!" if successful
+# Returns False, <error> if unsuccessful
+def logout(session_token):
+    request_headers = {'session-token': session_token}
+    response = requests.post(base_url + 'session/logout', headers=request_headers)
+    ret = False, "An error occured"
+    if response.status_code == 401:
+        ret = False, response.json()['message']
+    elif response.status_code == 204:
+        ret = True, "Success!"
+    print('logout(): ' + str(ret))
+    return ret
