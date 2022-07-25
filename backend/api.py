@@ -53,10 +53,10 @@ class User(db.Model):
 
 # Help function to convert a Users object into JSON
 def users_JSON(users):
-        response = {'users': []}
-        for user in users:
-            response['users'].append({'id': user.id, 'name': user.name})
-        return response
+    response = {'users': []}
+    for user in users:
+        response['users'].append({'id': user.id, 'name': user.name})
+    return response
 
 # Help function which hashes password string, and returns the hashed password
 def hash_password(password):
