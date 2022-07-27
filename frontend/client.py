@@ -43,7 +43,18 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-	return render_template('register.html')
+	error = ''
+	if request.method == 'POST':
+		user_name = request.form.get('name')
+		user_email = request.form.get('email')
+		user_password = request.form.get('password')
+		status, result = endpoint.register_user(user_name, user_email, user_password)
+		if status == True:
+			return redirect('/')
+		else:
+			error = result
+
+	return render_template('register.html', error=error)
 
 @app.route('/home', methods=['GET'])
 @login_required

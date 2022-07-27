@@ -24,7 +24,7 @@ def register_user(name, email, password):
         ret = False, response.json()['message']
     elif response.status_code == 201:
         ret = True, response.json()
-    print('regsiter_user(): ' + str(ret))
+    print('register_user(): ' + str(ret))
     return ret
 
 # Gets user information by sending GET to /api/user/<id>
