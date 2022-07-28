@@ -63,6 +63,11 @@ def home():
 
 @app.route('/logout', methods=['POST'])
 def logout():
+	if session.get('session_token'):
+		status, result = endpoint.logout(session['session_token'])
+		session.pop('user_name', None)
+		session.pop('user_id', None)
+		session.pop('session_token', None)
 	return redirect('/')
 
 @app.route('/delete_account', methods=['GET', 'POST'])
