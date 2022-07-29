@@ -6,5 +6,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
+    <div class="center">
+      <h1>Delete account</h1>
+      {% if error %}
+        <div class="error">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+          {{error}}
+        </div>
+      {% endif %}
+      <form action="/delete_account" method="post">
+        <div class="txt_field">
+          <input type="password" name="password" id="password" required>
+          <label>Password</label>
+        </div>
+        <button class="deletebtn">Delete account</button>
+        <div class="signup_link">
+          <a href="{{ url_for('home') }}">Go to home</a>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

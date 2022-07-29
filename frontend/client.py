@@ -73,7 +73,15 @@ def logout():
 @app.route('/delete_account', methods=['GET', 'POST'])
 @login_required
 def delete_account():
-	return render_template('delete_account.html')
+	error = ''
+	if request.method == 'POST':
+		user_password = request.form.get('password')
+		status, result = endpoint.delete_user(session['user_id'], user_password)
+		if status == True:
+			return redirect('/')
+		else:
+			error = result
+	return render_template('delete_account.html', error=error)
 
 @app.route('/filter_users', methods=['GET', 'POST'])
 @login_required
