@@ -86,7 +86,32 @@ def delete_account():
 @app.route('/filter_users', methods=['GET', 'POST'])
 @login_required
 def filter_users():
-	return render_template('filter_users.html')
+	html = None
+	if request.method == 'POST':
+		query = request.form.get('query')
+		formatted_query = query.lstrip().rstrip()
+		result = endpoint.filter_users(formatted_query)
+		if len(result) is not 0:
+			html = """
+			<table>
+				<tr>
+  	  			<th>ID</th>
+  	  			<th>Name</th>
+  				</tr>
+			"""
+			for user in result:
+				html += f"""
+				<tr>
+					<td>{user['id']}</th>
+					<td>{user['name']}</th>
+				<tr>
+				"""
+			html += "</table>"
+		else:
+			html = "<p><b>No users found.<b></p>"
+
+
+	return render_template('filter_users.html', html=html)
 
 @app.route('/request_password_reset', methods=['GET', 'POST'])
 def request_password_reset():
