@@ -90,8 +90,8 @@ def filter_users():
 	if request.method == 'POST':
 		query = request.form.get('query')
 		formatted_query = query.lstrip().rstrip()
-		result = endpoint.filter_users(formatted_query)
-		if len(result) is not 0:
+		status, result = endpoint.filter_users(formatted_query)
+		if status is True and len(result) is not 0:
 			html = """
 			<table>
 				<tr>
@@ -107,8 +107,10 @@ def filter_users():
 				<tr>
 				"""
 			html += "</table>"
-		else:
-			html = "<p><b>No users found.<b></p>"
+		elif status is True and len(result) is 0:
+			html = "<p><b>No users found.</b></p>"
+		elif status is False:
+			html = "<p><b>" + result + "</b></p>"
 
 
 	return render_template('filter_users.html', html=html)
