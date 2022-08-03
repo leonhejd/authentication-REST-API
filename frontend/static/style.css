@@ -111,18 +111,6 @@ input[type="submit"]:hover{
 .signup_link a:hover{
   text-decoration: underline;
 }
-.error {
-  padding: 20px;
-  background-color: #f44336;
-  color: white;
-  margin-bottom: 15px;
-}
-.success {
-  padding: 20px;
-  background-color: green; 
-  color: white;
-  margin-bottom: 15px;
-}
 .closebtn {
   margin-left: 15px;
   color: white;
@@ -216,4 +204,16 @@ td {
 }
 p {
   text-align: center;
+}
+.error {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  margin-bottom: 15px;
+}
+.success {
+  padding: 20px;
+  background-color: green; 
+  color: white;
+  margin-bottom: 15px;
 }

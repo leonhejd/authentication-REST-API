@@ -43,7 +43,7 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-	error = ''
+	error = None
 	if request.method == 'POST':
 		user_name = request.form.get('name')
 		user_email = request.form.get('email')
@@ -73,7 +73,7 @@ def logout():
 @app.route('/delete_account', methods=['GET', 'POST'])
 @login_required
 def delete_account():
-	error = ''
+	error = None
 	if request.method == 'POST':
 		user_password = request.form.get('password')
 		status, result = endpoint.delete_user(session['user_id'], user_password)
@@ -117,7 +117,16 @@ def filter_users():
 
 @app.route('/request_password_reset', methods=['GET', 'POST'])
 def request_password_reset():
-	return render_template('request_password_reset.html')
+	response = None
+	error = None
+	if request.method == 'POST':
+		email = request.form.get('email')
+		status, result = endpoint.request_password_reset(email)
+		if status == True:
+			response = result
+		else: 
+			error = result
+	return render_template('request_password_reset.html', response=response, error=error)
 
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
