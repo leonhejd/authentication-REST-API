@@ -91,7 +91,7 @@ def filter_users():
 		query = request.form.get('query')
 		formatted_query = query.lstrip().rstrip()
 		status, result = endpoint.filter_users(formatted_query)
-		if status is True and len(result) is not 0:
+		if status is True and len(result) != 0:
 			html = """
 			<table>
 				<tr>
@@ -107,7 +107,7 @@ def filter_users():
 				<tr>
 				"""
 			html += "</table>"
-		elif status is True and len(result) is 0:
+		elif status is True and len(result) == 0:
 			html = "<p><b>No users found.</b></p>"
 		elif status is False:
 			html = "<p><b>" + result + "</b></p>"
@@ -130,7 +130,17 @@ def request_password_reset():
 
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
-	return render_template('reset_password.html')
+	response = None
+	error = None
+	if request.method == 'POST':
+		reset_token = request.form.get('reset_token')
+		new_password = request.form.get('new_password')
+		status, result = endpoint.reset_password(reset_token, new_password)
+		if status == True:
+			response = result
+		else: 
+			error = result
+	return render_template('reset_password.html', response=response, error=error)
 
 if __name__ == '__main__':
 	app.run(port=8080, debug=False)
