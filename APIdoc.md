@@ -94,6 +94,7 @@ Request a password reset token, used for resetting the password of an account. R
     "message": "If an account with that email exists, an email has been sent with a reset token."
 }
 ```
+On success, an email containing the password reset token will be sent, which can be seen in the API server log.
 
 ## PUT /api/user/password
 Reset the password of a user. Requires reset token and new password in JSON format in request body.
@@ -102,7 +103,7 @@ Reset the password of a user. Requires reset token and new password in JSON form
 `PUT http://example.com/api/user/password`
 ```json
 {
-    "reset_token": "secret"
+    "reset_token": "secret",
     "new_password": "secret"
 }
 ```
@@ -149,7 +150,7 @@ Create a new session. Requires email and password is required as JSON in request
 `POST http://example.com/api/session/login`
 ```json
 {
-    "email": "adam@smith.com"
+    "email": "adam@smith.com",
     "password": "secret"
 }
 ```
